@@ -2,5 +2,5 @@ make --dry-run --always-make --keep-going --print-directory
 make: Entering directory `/Users/pnamwayk/ft_printf'
 make: Leaving directory `/Users/pnamwayk/ft_printf'
  
-make: *** No targets.  Stop.
+Makefile:5: *** commands commence before first target.  Stop.
 

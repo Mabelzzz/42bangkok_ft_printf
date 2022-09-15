@@ -6,13 +6,13 @@
 /*   By: pnamwayk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 23:42:12 by pnamwayk          #+#    #+#             */
-/*   Updated: 2022/09/10 14:44:47 by pnamwayk         ###   ########.fr       */
+/*   Updated: 2022/09/14 01:26:10 by pnamwayk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	power_ten(int n)
+int	power_ten(int n)
 {
 	int	p;	
 
@@ -32,7 +32,7 @@ static int	power_ten(int n)
 	}
 }
 
-static int	count_nbr(int nb)
+int	count_nbr(int nb)
 {
 	int	c;
 

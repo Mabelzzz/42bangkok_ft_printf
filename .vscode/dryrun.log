@@ -1,6 +1,18 @@
 make --dry-run --always-make --keep-going --print-directory
 make: Entering directory `/Users/pnamwayk/ft_printf'
+gcc -Wall -Werror -Wextra -c convert.c -o convert.o
+ 
+gcc -Wall -Werror -Wextra -c ft_bzero.c -o ft_bzero.o
+gcc -Wall -Werror -Wextra -c ft_calloc.c -o ft_calloc.o
+gcc -Wall -Werror -Wextra -c ft_itoa_un.c -o ft_itoa_un.o
+gcc -Wall -Werror -Wextra -c ft_itoa.c -o ft_itoa.o
+gcc -Wall -Werror -Wextra -c ft_printf.c -o ft_printf.o
+gcc -Wall -Werror -Wextra -c ft_putchar_fd.c -o ft_putchar_fd.o
+gcc -Wall -Werror -Wextra -c ft_putstr_fd.c -o ft_putstr_fd.o
+gcc -Wall -Werror -Wextra -c ft_strjoin.c -o ft_strjoin.o
+gcc -Wall -Werror -Wextra -c ft_strlcpy.c -o ft_strlcpy.o
+gcc -Wall -Werror -Wextra -c ft_strlen.c -o ft_strlen.o
+gcc -Wall -Werror -Wextra -c ft_toupper.c -o ft_toupper.o
+ar -rcs libftprintf.a convert.o ft_bzero.o ft_calloc.o ft_itoa_un.o ft_itoa.o ft_printf.o ft_putchar_fd.o ft_putstr_fd.o ft_strjoin.o ft_strlcpy.o ft_strlen.o ft_toupper.o
 make: Leaving directory `/Users/pnamwayk/ft_printf'
  
-Makefile:5: *** commands commence before first target.  Stop.
-

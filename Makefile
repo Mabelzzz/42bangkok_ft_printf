@@ -1,12 +1,17 @@
-#include "ft_printf.h"
-NAME = libft/libft.a
+NAME = libftprintf.a
 FLAGS = -Wall -Werror -Wextra
-SRCS = 
-	ft_printf.c \
-	convert.c \
-	ft_bzero.c \
-	ft_calloc.c \
-	ft_itoa.c \
+SRCS = 	convert.c \
+		ft_bzero.c \
+		ft_calloc.c \
+		ft_itoa_un.c \
+		ft_itoa.c \
+		ft_printf.c \
+		ft_putchar_fd.c \
+		ft_putstr_fd.c \
+		ft_strjoin.c \
+		ft_strlcpy.c \
+		ft_strlen.c \
+		ft_toupper.c 
 
 OBJS = $(SRCS:.c=.o)
 

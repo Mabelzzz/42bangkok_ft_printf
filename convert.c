@@ -5,10 +5,15 @@ char *convert_c(char c)
 {
     char   *str;
     //printf("\n-- %c --\n", c);
-    str = ft_calloc(sizeof(char), 2);
+    
+    str = ft_calloc(sizeof(char), ft_strlen(&c) + 1);
     if (!str)
         return NULL;
-    str[0] = c;
+    if (c == 0)
+        str[0] = '\0';
+    else
+        str[0] = c;
+    // printf("p : %p \n", str);
     return (str);
 }
 char *convert_id(int d)
@@ -19,6 +24,19 @@ char *convert_id(int d)
     if (!str)
         return NULL;
     return (str);
+}
+char *convert_s(char *s)
+{
+    // char    *str;
+    // printf("func : %s", s);
+    if (!s)
+        return (NULL);
+
+    // str = ft_calloc(sizeof(char), ft_strlen(s) + 1);
+    // if (!str )
+    //     return (NULL);
+    // ft_memcpy(str, s, ft_strlen(s));
+    return (s);
 }
 // char    *convert_p(size_t ptr)
 // {
@@ -54,10 +72,12 @@ size_t     strlen_hex(unsigned long ptr)
     size_t  len;
 
     len = 0;
-    while (ptr > 0)
+    while (ptr >= 0)
     {
         ptr /= 16;
         len++;
+        if (ptr == 0)
+            break;
     }
     return (len);
 }
@@ -66,13 +86,15 @@ char    *convert_base(unsigned long ptr)
     char    *str;
     size_t  len;
  
-    if (ptr == SIZE_MAX)
-        return  ((char *)SIZE_MAX);
+    // if (ptr == SIZE_MAX)
+    //     return  ((char *)SIZE_MAX);
     len = strlen_hex(ptr);
     str = ft_calloc(sizeof(char), len + 1);
     if (!str)
         return NULL;
     len--;
+    if (ptr == 0)
+            str[len] = '0';
     while (ptr > 0 && len >= 0)
     {
         str[len] = "0123456789abcdef"[ptr%16];
@@ -84,20 +106,23 @@ char    *convert_base(unsigned long ptr)
 char    *convert_p(unsigned long ptr)
 {
     char    *str;
+    char    *p;
 
-    str = ft_calloc(sizeof(char), strlen_hex(ptr) + 3);
-    if (!str)
-        return  (NULL);
-    str = ft_strjoin("0x", convert_base(ptr));
+    p = convert_base(ptr);
+    // str = ft_calloc(sizeof(char), strlen_hex(ptr) + 3);
+    // if (!str)
+    //     return  (NULL);
+    str = ft_strjoin("0x", p);
+    free(p);
     return  (str);
 }
 char    *convert_x(char *fmt, unsigned int x)
 {
     char    *str;
   
-    str = ft_calloc(sizeof(char), strlen_hex(x) + 1);
-    if (!str)
-        return  (NULL);
+    // str = ft_calloc(sizeof(char), strlen_hex(x) + 1);
+    // if (!str)
+    //     return  (NULL);
     str = convert_base((unsigned long)x);
     if (*fmt == 'X')
         str =ft_toupper(str);

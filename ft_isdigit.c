@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pnamwayk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/02 19:39:33 by pnamwayk          #+#    #+#             */
-/*   Updated: 2022/09/21 01:18:06 by pnamwayk         ###   ########.fr       */
+/*   Created: 2022/07/02 19:09:57 by pnamwayk          #+#    #+#             */
+/*   Updated: 2022/09/22 18:12:30 by pnamwayk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	ft_strlen(const char *str)
+int	ft_isdigit(int digit)
 {
-	size_t	len;
-
-	len = 0;
-	while (str[len] != '\0')
-		len++;
-	return (len);
+	if (digit >= '0' && digit <= '9')
+		return (1);
+	return (0);
 }

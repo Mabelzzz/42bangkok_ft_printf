@@ -11,8 +11,11 @@ SRCS = 	convert.c \
 		ft_strjoin.c \
 		ft_strlcpy.c \
 		ft_strlen.c \
-		ft_toupper.c 
-
+		ft_toupper.c \
+		ft_memcpy.c \
+		ft_isdigit.c \
+		ft_atoi
+		
 OBJS = $(SRCS:.c=.o)
 
 %o: %c

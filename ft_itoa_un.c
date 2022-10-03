@@ -12,7 +12,7 @@ static int	power_ten(int n)
 			p *= 10;
 			n--;
 		}
-        printf("power : %i", p);
+        // printf("power : %i", p);
 		return (p);
 	}
 	else
@@ -36,21 +36,23 @@ static int	count_nbr(unsigned int nb)
 		if (nb == 0)
 			break ;
 	}
-    printf("c : %i", c);
+    // printf("c : %i", c);
 	return (c);
 }
 
-static void	get_nbr(unsigned long nb, int count, int i, char *str)
+static void	get_nbr(unsigned long nb, int count, char *str)
 {
 	unsigned long	nb1;
+	int	i;
 
+	i = 0;
 	nb1 = nb;
 	while (count >= 1)
 	{
-		nb1 = nb1 / power_ten(count - 1);
-        printf("nb1 : %lu", nb1);
-		str[i] = nb1 % 10 + '0';
-        printf("str : %c", str[i]);
+		nb = nb1 / power_ten(count - 1);
+        // printf("nb1 : %lu", nb1);
+		str[i] = nb % 10 + '0';
+        // printf("str : %c", str[i]);
 		count--;
 		i++;
 	}
@@ -69,6 +71,6 @@ char	*ft_itoa_un(unsigned int n)
 	if (!str)
 		return (NULL);
 	if (nb >= 0 && nb <= 4294967295)
-		get_nbr(nb, count, 0, str);
+		get_nbr(nb, count, str);
 	return (str);
 }

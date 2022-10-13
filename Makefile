@@ -14,12 +14,13 @@ SRCS = 	convert.c \
 		ft_toupper.c \
 		ft_memcpy.c \
 		ft_isdigit.c \
-		ft_atoi
-		
+		ft_atoi.c \
+		check.c
+
 OBJS = $(SRCS:.c=.o)
 
 %o: %c
-	gcc $(FLAGS) -c $< -o $@
+	gcc $(FLAGS) -c $< -o $@ 
 
 all: $(NAME)
 	
@@ -33,5 +34,7 @@ fclean:	clean
 		rm -f $(NAME) 
 
 re:	fclean all
+
+bonus: all
 
 .PHONY:	bonus clean fclean all re 

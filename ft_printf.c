@@ -1,150 +1,90 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pnamwayk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/05 15:56:08 by pnamwayk          #+#    #+#             */
+/*   Updated: 2022/10/13 13:22:29 by pnamwayk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
-// #include "libft/libft.h"
-void check_pcs(char *fmt, t_prnt *spec)
-{
 
+char	*check_type(char *fmt, va_list args, t_prnt *spec)
+{
+	char	*str;
+
+	if (*fmt == '%')
+		str = convert_c('%', spec);
+	else if (*fmt == 'c')
+		str = convert_c(va_arg (args, int), spec);
+	else if (*fmt == 's')
+		str = convert_s(va_arg (args, char *), spec);
+	else if (*fmt == 'p')
+		str = convert_p(va_arg (args, unsigned long), spec);
+	else if (*fmt == 'd' || *fmt == 'i')
+		str = convert_id(va_arg (args, int), spec);
+	else if (*fmt == 'u')
+		str = convert_u(va_arg (args, unsigned int), spec);
+	else if (*fmt == 'x' || *fmt == 'X')
+		str = convert_x(fmt, va_arg (args, unsigned int), spec);
+	else
+		str = "";
+
+	
+	if (*str == '\0' && *fmt == 'c')
+		spec->len += 1;
+	else
+		spec->len += (int)ft_strlen(str);
+	
+	if (*fmt != 's')
+		 free(str);
+		
+	return (fmt);
 }
 
-void check_width(char *fmt, t_prnt *spec)
+void	printfmt(const char *format, va_list args, t_prnt *spec)
 {
-    char    *w;
+	char	*fmt;
 
-    if (ft_isdigit(*fmt) == 1)
-    {
-        while (*fmt != CONVERSION || *fmt != '.')
-        {
-            *w = *fmt;
-            *fmt++;
-            *w++;
-        }
-        if (*fmt == '.')
-        {
-            *fmt++;
-            check_pcs(fmt, spec);
-        }
-    }
-    spec -> width = ft_atoi(*w);
-}
-//Priority # > + > space
-void check_flags1(char *fmt, t_prnt *spec)
-{
-    int i;
-    
-    i = 2;
-    while (i >= 0)
-    {
-        if (*fmt == FLAG1[i] || *(fmt + 1) == FLAG1[i] || *(fmt + 2) == FLAG1[i])
-            spec -> flag1 = FLAG1[i];
-        i--;
-    }
-    i = 0;
-    while (i <= 2)
-    {
-        if (*fmt == FLAG1[i] || *(fmt + 1) == FLAG1[i] || *(fmt + 2) == FLAG1[i])
-        {
-            *fmt++;
-            spec -> len++;
-            i = 0;
-        } 
-        i++;
-    }
-    check_flags2(fmt, spec);
+	fmt = (char *)format;
+	while (*fmt)
+	{
+		if (*fmt == '%' )
+		{
+			fmt++;
+			fmt = check_flags1(fmt, spec);
+			fmt = check_flags2(fmt, spec);
+			fmt = check_width(fmt, spec);
+			fmt = check_type(fmt, args, spec);
+		}
+		else
+		{
+			ft_putchar_fd(*fmt, 1);
+			spec->len++;
+		}
+		fmt++;
+	}
 }
 
-void check_flags2(char *fmt, t_prnt *spec)
+int	ft_printf(const char *fmt, ...)
 {
-    int i;
-    
-    i = 2;
-    while (i >= 0)
-    {
-        if (*fmt == FLAG2[i] || *(fmt + 1) == FLAG2[i])
-            spec -> flag2 = FLAG1[i];
-        i--;
-    }
-    i =  0;
-    while (i <= 2)
-    {
-        if (*fmt == FLAG2[i] || *(fmt + 1) == FLAG2[i])
-        {
-            *fmt++;
-            spec -> len++;
-            i = 0;
-        } 
-        i++;
-    }
-    // check_width(fmt, args, spec);
-}
-int check_type(char *fmt, va_list args)
-{
-    char *str;
-    int len;
-
-    if (*fmt == '%')
-        str = convert_c('%');
-    else if (*fmt == 'c') 
-        str = convert_c(va_arg (args, int));
-    else if (*fmt == 's')
-        str = convert_s(va_arg (args, char *));
-    else if (*fmt == 'p') 
-        str = convert_p(va_arg (args, unsigned long));
-    else if (*fmt == 'd' || *fmt == 'i')
-        str = convert_id(va_arg (args, int));
-    else if (*fmt == 'u') 
-        str = convert_u(va_arg (args, unsigned int));
-    else if (*fmt == 'x' || *fmt == 'X') 
-        str = convert_x(fmt, va_arg (args, unsigned int));
-    else 
-        str = "";
-        
-    if (!str)
-        str = "(null)";
-    if (*fmt == 'c' || *fmt == '%')
-        ft_putchar_fd(*str, 1);
-    else
-        ft_putstr_fd(str, 1);
-    len = (int)ft_strlen(str);
-    if (*str == '\0' && *fmt == 'c')
-        len = 1;
-    if (*fmt != 's') 
-        free(str);
-    return (len);
-}
-int printfmt(const char *format, va_list args, t_prnt *spec)
-{
-    char *fmt;
-
-    spec -> len = 0;
-    fmt = (char *)format;
-    while (*fmt)
-    {
-        if (*fmt == '%')
-        {
-            fmt++;
-            check_flags1(fmt, spec);
-        } 
-        else 
-        {
-            ft_putchar_fd(*fmt, 1);
-            spec -> len++;
-        }
-        fmt++;
-    }
-    return (spec -> len);
-}
-int ft_printf(const char *fmt, ...)
-{
-    // char *fmt;
-    // fmt = (char *)format;
-    va_list args;
-    t_prnt *spec;
-    int len;
-
-    if (!fmt)
-        return (0);
-    va_start(args, fmt);
-    len = printfmt(fmt, args, spec);
-    va_end(args);
-
-    return len;
+	va_list		args;
+	t_prnt		spec;	
+	
+	spec.flag1 = '!';
+	spec.flag2 = ' ';
+    spec.type = '!';
+	spec.width = -2;
+	spec.pcs = -2;
+	spec.len = 0;
+	spec.str_len = 0;
+	if (!fmt)
+		return (0);
+	va_start(args, fmt);
+	printfmt(fmt, args, &spec);
+	va_end(args);	
+	return (spec.len);
 }

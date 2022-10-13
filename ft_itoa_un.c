@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa_un.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pnamwayk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/05 14:25:38 by pnamwayk          #+#    #+#             */
+/*   Updated: 2022/10/13 13:19:37 by pnamwayk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 static int	power_ten(int n)
@@ -12,14 +24,10 @@ static int	power_ten(int n)
 			p *= 10;
 			n--;
 		}
-        // printf("power : %i", p);
 		return (p);
 	}
 	else
-	{
 		return (1);
-	}
-
 }
 
 static int	count_nbr(unsigned int nb)
@@ -36,23 +44,20 @@ static int	count_nbr(unsigned int nb)
 		if (nb == 0)
 			break ;
 	}
-    // printf("c : %i", c);
 	return (c);
 }
 
 static void	get_nbr(unsigned long nb, int count, char *str)
 {
 	unsigned long	nb1;
-	int	i;
+	int				i;
 
 	i = 0;
 	nb1 = nb;
 	while (count >= 1)
 	{
 		nb = nb1 / power_ten(count - 1);
-        // printf("nb1 : %lu", nb1);
 		str[i] = nb % 10 + '0';
-        // printf("str : %c", str[i]);
 		count--;
 		i++;
 	}
@@ -61,8 +66,8 @@ static void	get_nbr(unsigned long nb, int count, char *str)
 
 char	*ft_itoa_un(unsigned int n)
 {
-	char	*str;
-	int		count;
+	char			*str;
+	int				count;
 	unsigned long	nb;
 
 	nb = n;

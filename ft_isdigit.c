@@ -6,11 +6,9 @@
 /*   By: pnamwayk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 19:09:57 by pnamwayk          #+#    #+#             */
-/*   Updated: 2022/09/22 18:12:30 by pnamwayk         ###   ########.fr       */
+/*   Updated: 2022/07/02 21:17:37 by pnamwayk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "ft_printf.h"
 
 int	ft_isdigit(int digit)
 {

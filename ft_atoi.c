@@ -6,13 +6,13 @@
 /*   By: pnamwayk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 19:26:45 by pnamwayk          #+#    #+#             */
-/*   Updated: 2022/09/22 18:12:08 by pnamwayk         ###   ########.fr       */
+/*   Updated: 2022/10/05 21:03:21 by pnamwayk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_atoi(const char *str)
+int	ft_atoi(char *str)
 {
 	int	index;
 	int	result;

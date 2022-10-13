@@ -1,72 +1,86 @@
 #include "ft_printf.h"
-// #include "libft/libft.h"
 
-char *convert_c(char c)
+char *convert_c(char c, t_prnt *spec);
+char *convert_id(int d, t_prnt *spec);
+char *convert_s(char *str, t_prnt *spec);
+size_t     strlen_hex(unsigned long ptr);
+char    *convert_base(unsigned long ptr);
+char    *convert_p(unsigned long ptr, t_prnt *spec);
+char    *convert_x(char *fmt, unsigned int x, t_prnt *spec);
+char *convert_u(unsigned int u, t_prnt *spec);
+
+char *convert_c(char c, t_prnt *spec)
 {
     char   *str;
-    //printf("\n-- %c --\n", c);
-    
-    str = ft_calloc(sizeof(char), ft_strlen(&c) + 1);
+
+    str = ft_calloc(sizeof(char), 2);
     if (!str)
         return NULL;
+    str[0] = c;
+    spec->str_len = (int)ft_strlen(str);
+    spec->type = 'c';
     if (c == 0)
+    {
         str[0] = '\0';
+        spec->str_len = 1;
+    }
+    if (spec->width > spec->str_len)
+        ft_put_flag(str, spec);
     else
-        str[0] = c;
-    // printf("p : %p \n", str);
+        ft_putchar_fd(*str, 1);
     return (str);
 }
-char *convert_id(int d)
+
+char *convert_id(int d, t_prnt *spec)
 {
     char   *str;
  
     str = ft_itoa(d);
     if (!str)
         return NULL;
+    spec->str_len = (int)ft_strlen(str);
+    spec->type = 'd';
+    if (d >= 0 && (spec->flag1 == '+' || spec->flag1 == ' '))
+    {
+        ft_putchar_fd(spec->flag1, 1);
+        spec->len++;
+    }
+    if (spec->pcs == 0 && spec->width == 0 && *str == 0)
+            spec->len -= spec->str_len;
+    else if (spec->pcs != -2)
+        ft_put_pcs(str, spec);
+    else if (spec->width > spec->str_len)
+        ft_put_flag(str, spec);
+    else
+        ft_putstr_fd(str, 1);
     return (str);
 }
-char *convert_s(char *s)
+char *convert_s(char *str, t_prnt *spec)
 {
-    // char    *str;
-    // printf("func : %s", s);
-    if (!s)
-        return (NULL);
-
-    // str = ft_calloc(sizeof(char), ft_strlen(s) + 1);
-    // if (!str )
-    //     return (NULL);
-    // ft_memcpy(str, s, ft_strlen(s));
-    return (s);
+    if (!str)
+        str = "(null)";
+    spec->str_len = (int)ft_strlen(str);
+    spec->type = 's';
+    if (spec->pcs == 0 && spec->width == 0 && *str == 0)
+            spec->len -= spec->str_len;
+    else if (spec->pcs != -2)
+        ft_put_pcs(str, spec);
+    else if (spec->width >= spec->str_len)
+    {
+        if (spec->flag1 == ' ')
+        {
+            ft_putchar_fd(spec->flag1, 1);
+            spec->len++;
+            ft_putstr_fd(str, 1);
+        }
+        else
+            ft_put_flag(str, spec);  
+    } 
+    else
+        ft_putstr_fd(str, 1);
+    return (str);
 }
-// char    *convert_p(size_t ptr)
-// {
-//     char    *str;
-//     size_t  tmp;
-//     int     i;
-//     i = 0;
- 
-//     if (ptr == SIZE_MAX)
-//         return  ((char *)SIZE_MAX);
-//     tmp = ptr;
-//     while (tmp > 0)
-//     {
-//         tmp /= 16;
-//         i++;
-//     }
-//     str = ft_calloc(sizeof(char), i + 3 );
-//     if (!str)
-//         return NULL;
-//     i++;
-//     str[0] = '0';
-//     str[1] = 'x';
-//     while (ptr > 0 && i >= 2)
-//     {
-//         str[i] = "0123456789abcdef"[ptr%16];
-//         ptr /= 16;
-//         i--;
-//     }
-//     return str;
-// }
+
 size_t     strlen_hex(unsigned long ptr)
 {
     size_t  len;
@@ -86,8 +100,6 @@ char    *convert_base(unsigned long ptr)
     char    *str;
     size_t  len;
  
-    // if (ptr == SIZE_MAX)
-    //     return  ((char *)SIZE_MAX);
     len = strlen_hex(ptr);
     str = ft_calloc(sizeof(char), len + 1);
     if (!str)
@@ -103,37 +115,81 @@ char    *convert_base(unsigned long ptr)
     }
     return str;
 }
-char    *convert_p(unsigned long ptr)
+char    *convert_p(unsigned long ptr, t_prnt *spec)
 {
     char    *str;
     char    *p;
 
     p = convert_base(ptr);
-    // str = ft_calloc(sizeof(char), strlen_hex(ptr) + 3);
-    // if (!str)
-    //     return  (NULL);
     str = ft_strjoin("0x", p);
     free(p);
+    spec->str_len = (int)ft_strlen(str);
+    spec->type = 'p';
+    if (spec->pcs == 0 && spec->width == 0 && *str == 0)
+        spec->len -= spec->str_len;
+    else if (spec->pcs != -2)
+        ft_put_pcs(str, spec);
+    else if (spec->width > spec->str_len)
+        ft_put_flag(str, spec);
+    else
+        ft_putstr_fd(str, 1);
     return  (str);
 }
-char    *convert_x(char *fmt, unsigned int x)
+char    *convert_x(char *fmt, unsigned int x, t_prnt *spec)
 {
     char    *str;
-  
-    // str = ft_calloc(sizeof(char), strlen_hex(x) + 1);
-    // if (!str)
-    //     return  (NULL);
-    str = convert_base((unsigned long)x);
+    char    *p;
+
+    if (x != 0 && spec->flag1 == '#')
+    {
+        p = convert_base((unsigned long)x);
+        str = ft_strjoin("0x", p);
+        free(p);
+    }
+    else 
+    {
+        str = convert_base((unsigned long)x);
+    }
+
     if (*fmt == 'X')
         str =ft_toupper(str);
+    spec->str_len = (int)ft_strlen(str);
+    spec->type = 'x';
+    if (spec->flag2 == '0' && spec->pcs < spec->str_len && spec->pcs != -2)
+            spec->flag2 = ' ';
+    if (spec->pcs != -2 && spec->pcs >= spec->str_len)
+    {
+        ft_put_pcs(str, spec);
+    }
+    else if (spec->width >= spec->str_len)
+        ft_put_flag(str, spec);
+    else
+    {
+        ft_putstr_fd(str, 1);
+    }
     return  (str);   
 }
-char *convert_u(unsigned int u)
+char *convert_u(unsigned int u, t_prnt *spec)
 {
     char   *str;
 
     str = ft_itoa_un(u);
     if (!str)
         return NULL;
+    spec->str_len = (int)ft_strlen(str);
+    spec->type = 'u';
+    if (u > 0 && (spec->flag1 == '+' || spec->flag1 == ' '))
+    {
+        ft_putchar_fd(spec->flag1, 1);
+        spec->len++;
+    }
+    if (spec->pcs == 0 && spec->width == 0 && *str == 0)
+        spec->len -= spec->str_len;
+    else if (spec->pcs != -2)
+        ft_put_pcs(str, spec);
+    else if (spec->width > spec->str_len)
+        ft_put_flag(str, spec);
+    else
+        ft_putstr_fd(str, 1);
     return (str);
 }

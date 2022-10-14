@@ -13,18 +13,24 @@ char    check_priority(char fl, char defult, int cnt)
     pr = 0;
     if (cnt == 3)
     {
-        while (pr++ < cnt)
+        while (pr < cnt)
         {
             if (defult == FLAG1[pr] || fl == FLAG1[pr])
                 return (FLAG1[pr]);
+            pr++;
         }
     }
-    else
+    else if (cnt == 2)
     {
-        while (pr++ < cnt)
+        while (pr < cnt)
         {
+            // printf(" %d df : %c fl : %c fl2 : %c\n", pr, defult, fl, FLAG2[pr]);
             if (defult == FLAG2[pr] || fl == FLAG2[pr])
+            {
+                
                 return (FLAG2[pr]);
+            }
+            pr++;
         }
     }
     return (defult);
@@ -59,10 +65,14 @@ char *check_flags2(char *fmt, t_prnt *spec)
         if (i == 0)
             spec->flag2 = *fmt;
         else
+        {
             spec->flag2 = check_priority(*fmt, spec->flag2, 2);
+                // printf("fl : |%c| w: %d p : %d l : %d\n", spec->flag2, spec->width, spec->pcs, spec->str_len);
+        }
         fmt++;
         i++;
     }
+        // printf("fl : |%c| w: %d p : %d l : %d\n", spec->flag2, spec->width, spec->pcs, spec->str_len);
     return (fmt);
 }
 
@@ -85,6 +95,7 @@ int	nub_nbr(int nb)
 
 char *check_width(char *fmt, t_prnt *spec)
 {
+    // printf("fl : |%c| w: %d p : %d l : %d\n", spec->flag2, spec->width, spec->pcs, spec->str_len);
     spec->width = -2;
     if (*fmt == '.')
         spec->width = 0;
@@ -107,6 +118,5 @@ char *check_width(char *fmt, t_prnt *spec)
             fmt += nub_nbr(spec->pcs);
         }
     }
-
     return (fmt);
    }

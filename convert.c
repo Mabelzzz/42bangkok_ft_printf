@@ -155,14 +155,24 @@ char    *convert_x(char *fmt, unsigned int x, t_prnt *spec)
         str =ft_toupper(str);
     spec->str_len = (int)ft_strlen(str);
     spec->type = 'x';
-    if (spec->flag2 == '0' && spec->pcs < spec->str_len && spec->pcs != -2)
+    // else 
+    if (spec->flag2 == '0' && spec->width > spec->str_len && spec->pcs > 0)
+        spec->flag2 = ' ';
+    else if ((spec->flag2 == '0' || spec->flag2 == '-')&& spec->pcs < spec->str_len && spec->pcs == 0)
             spec->flag2 = ' ';
+    // if (spec->flag2 == '0' && spec->pcs <= spec->str_len && spec->pcs > 0)
+    //     ft_putstr_fd(str, 1);
     if (spec->pcs != -2 && spec->pcs >= spec->str_len)
     {
         ft_put_pcs(str, spec);
     }
     else if (spec->width >= spec->str_len)
         ft_put_flag(str, spec);
+    else if (spec->width >= spec->str_len - 1 && spec->width == 0 && spec->pcs == 0 && str[0] == '0')
+    {
+        ft_putstr_fd("", 1);
+        spec->len -= 1;
+    }
     else
     {
         ft_putstr_fd(str, 1);

@@ -6,11 +6,15 @@
 /*   By: pnamwayk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:56:08 by pnamwayk          #+#    #+#             */
-/*   Updated: 2022/10/13 13:22:29 by pnamwayk         ###   ########.fr       */
+/*   Updated: 2022/10/15 16:52:53 by pnamwayk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+char	*check_type(char *fmt, va_list args, t_prnt *spec);
+void	printfmt(const char *format, va_list args, t_prnt *spec);
+int		ft_printf(const char *fmt, ...);
 
 char	*check_type(char *fmt, va_list args, t_prnt *spec)
 {
@@ -32,16 +36,12 @@ char	*check_type(char *fmt, va_list args, t_prnt *spec)
 		str = convert_x(fmt, va_arg (args, unsigned int), spec);
 	else
 		str = "";
-
-	
 	if (*str == '\0' && *fmt == 'c')
 		spec->len += 1;
 	else
 		spec->len += (int)ft_strlen(str);
-	
 	if (*fmt != 's')
-		 free(str);
-		
+		free(str);
 	return (fmt);
 }
 
@@ -73,10 +73,10 @@ int	ft_printf(const char *fmt, ...)
 {
 	va_list		args;
 	t_prnt		spec;	
-	
+
 	spec.flag1 = '!';
 	spec.flag2 = ' ';
-    spec.type = '!';
+	spec.type = '!';
 	spec.width = -2;
 	spec.pcs = -2;
 	spec.len = 0;
@@ -85,6 +85,6 @@ int	ft_printf(const char *fmt, ...)
 		return (0);
 	va_start(args, fmt);
 	printfmt(fmt, args, &spec);
-	va_end(args);	
+	va_end(args);
 	return (spec.len);
 }

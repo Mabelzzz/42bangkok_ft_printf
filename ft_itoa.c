@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa_un.c                                       :+:      :+:    :+:   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pnamwayk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/05 14:25:38 by pnamwayk          #+#    #+#             */
-/*   Updated: 2022/10/15 17:09:44 by pnamwayk         ###   ########.fr       */
+/*   Created: 2022/08/14 23:42:12 by pnamwayk          #+#    #+#             */
+/*   Updated: 2022/10/15 17:07:01 by pnamwayk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	power_ten(int n);
-static int	count_nbr(unsigned int nb);
-static void	get_nbr(unsigned long nb, int count, char *str);
-char		*ft_itoa_un(unsigned int n);
+int			power_ten(int n);
+int			count_nbr(int nb);
+static void	get_nbr(long nb, int count, int i, char *str);
+char		*ft_itoa(int n);
 
-static int	power_ten(int n)
+int	power_ten(int n)
 {
 	int	p;	
 
@@ -32,10 +32,12 @@ static int	power_ten(int n)
 		return (p);
 	}
 	else
+	{
 		return (1);
+	}
 }
 
-static int	count_nbr(unsigned int nb)
+int	count_nbr(int nb)
 {
 	int	c;
 
@@ -47,40 +49,45 @@ static int	count_nbr(unsigned int nb)
 		nb = nb / 10;
 		c++;
 		if (nb == 0)
+		{
 			break ;
+		}
 	}
 	return (c);
 }
 
-static void	get_nbr(unsigned long nb, int count, char *str)
+static void	get_nbr(long nb, int count, int i, char *str)
 {
-	unsigned long	nb1;
-	int				i;
+	long	nb1;
 
-	i = 0;
-	nb1 = nb;
 	while (count >= 1)
 	{
-		nb = nb1 / power_ten(count - 1);
-		str[i] = nb % 10 + '0';
+		nb1 = nb / power_ten(count - 1);
+		str[i] = nb1 % 10 + '0';
 		count--;
 		i++;
 	}
 	str[i] = 0;
 }
 
-char	*ft_itoa_un(unsigned int n)
+char	*ft_itoa(int n)
 {
-	char			*str;
-	int				count;
-	unsigned long	nb;
+	char	*str;
+	int		count;
+	long	nb;
 
 	nb = n;
 	count = count_nbr(n);
-	str = malloc(sizeof(char) * (count + 1));
+	str = malloc(sizeof(char) * count + 1);
 	if (!str)
 		return (NULL);
-	if (nb >= 0 && nb <= 4294967295)
-		get_nbr(nb, count, str);
+	if (nb >= 0 && nb <= 2147483647)
+		get_nbr(nb, count, 0, str);
+	else if (nb < 0 && nb >= -2147483648)
+	{
+		str[0] = '-';
+		nb *= -1;
+		get_nbr(nb, count - 1, 1, str);
+	}
 	return (str);
 }

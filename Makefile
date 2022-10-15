@@ -1,22 +1,24 @@
 NAME = libftprintf.a
 FLAGS = -Wall -Werror -Wextra
-SRCS = 	convert_cs.c \
+SRCS = 	check.c \
+		convert_cs.c \
 		convert_diu.c \
 		convert_xp.c \
+		ft_printf.c \
+		ft_put_flag_pcs.c \
+		ft_put_bonus.c \
+		ft_put_condition.c \
+		ft_put_fd.c \
 		ft_bzero.c \
 		ft_calloc.c \
 		ft_itoa_un.c \
 		ft_itoa.c \
-		ft_printf.c \
-		ft_putchar_fd.c \
-		ft_putstr_fd.c \
 		ft_strjoin.c \
 		ft_strlcpy.c \
 		ft_strlen.c \
 		ft_toupper.c \
 		ft_isdigit.c \
 		ft_atoi.c \
-		check.c
 
 OBJS = $(SRCS:.c=.o)
 

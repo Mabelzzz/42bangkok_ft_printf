@@ -1,6 +1,8 @@
 NAME = libftprintf.a
 FLAGS = -Wall -Werror -Wextra
-SRCS = 	convert.c \
+SRCS = 	convert_cs.c \
+		convert_diu.c \
+		convert_xp.c \
 		ft_bzero.c \
 		ft_calloc.c \
 		ft_itoa_un.c \
@@ -12,7 +14,6 @@ SRCS = 	convert.c \
 		ft_strlcpy.c \
 		ft_strlen.c \
 		ft_toupper.c \
-		ft_memcpy.c \
 		ft_isdigit.c \
 		ft_atoi.c \
 		check.c

@@ -26,7 +26,7 @@ typedef struct s_prnt{
 	int		len;
 	int		str_len;
 }	t_prnt;
-
+char	*condition_x(char	*str, t_prnt *spec);
 void ft_put_p(int l_put, int cnt, char *str, t_prnt *spec);
 void	ft_put_cnt(char *str, t_prnt *spec);
 void	ft_put_d(int l_put, int cnt, char *str, t_prnt *spec);
